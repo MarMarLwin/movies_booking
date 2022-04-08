@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:movies/controller/popular_movie_controller.dart';
+import 'package:movies/utils/app_constants.dart';
 import 'package:movies/utils/colors.dart';
 import 'package:movies/utils/dimensions.dart';
 import 'package:movies/widgets/app_column.dart';
@@ -9,10 +12,13 @@ import 'package:movies/widgets/icon_and_text.dart';
 import 'package:movies/widgets/small_text.dart';
 
 class PopularMovieDetail extends StatelessWidget {
-  const PopularMovieDetail({Key? key}) : super(key: key);
+  int movieId;
+
+  PopularMovieDetail({Key? key, required this.movieId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var movie = Get.find<PopularMovieController>().movieList[movieId];
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -23,10 +29,11 @@ class PopularMovieDetail extends StatelessWidget {
               right: 0,
               child: Container(
                 width: double.maxFinite,
-                height: Dimension.dimen350,
+                height: Dimension.dimen400,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage('assets/images/img1.jpg'),
+                      image: NetworkImage(
+                          '${AppConstant.imageInitUrl}${movie.posterPath}'),
                       fit: BoxFit.cover),
                 ),
               )),
@@ -36,13 +43,18 @@ class PopularMovieDetail extends StatelessWidget {
               right: Dimension.dimen10,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  AppIcon(icon: Icons.arrow_back_ios),
-                  AppIcon(icon: Icons.favorite_border)
+                children:  [
+                  GestureDetector(
+                    child: const AppIcon(icon: Icons.arrow_back_ios),
+                      onTap: (){
+                        Get.back(closeOverlays: true);
+                      }
+                  ),
+                  const AppIcon(icon: Icons.favorite_border)
                 ],
               )),
           Positioned(
-              top: Dimension.dimen350 - 20,
+              top: Dimension.dimen400 - 20,
               left: 0,
               right: 0,
               bottom: 0,
@@ -62,20 +74,21 @@ class PopularMovieDetail extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       AppColumn(
-                        title: 'Spider-Man: No Way Home',
-                        rateText: '4.5',
-                        commentText: '1289',
-                        status: 'Normal',
-                        size: '910 kb',
-                        duration: '52 mins',
+                        title: movie.title,
+                        voteAverage: '${movie.voteAverage}',
+                        voteCount: '${movie.voteCount}',
+                        releaseDate: movie.releaseDate,
+                        language: movie.originalLanguage,
                       ),
                       SizedBox(
                         height: Dimension.dimen10,
                       ),
                       BigText(text: 'Introduced'),
-                      ExpandableText(
-                          text:
-                              'In an effort to thwart Grindelwald\'s plans of raising purse-blood wizards to rule over all non-magical beings.In an effort to thwart Grindelwald\'s plans of raising purse-blood wizards to rule over all non-magical beings.')
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: ExpandableText(text: movie.overview),
+                        ),
+                      )
                     ],
                   ),
                 ),
@@ -84,41 +97,50 @@ class PopularMovieDetail extends StatelessWidget {
       ),
       bottomNavigationBar: Container(
         height: Dimension.dimen110,
-        padding: EdgeInsets.only(top: Dimension.dimen15,bottom: Dimension.dimen15,left: Dimension.dimen20,right: Dimension.dimen20),
+        padding: EdgeInsets.only(
+            top: Dimension.dimen15,
+            bottom: Dimension.dimen15,
+            left: Dimension.dimen20,
+            right: Dimension.dimen20),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(Dimension.dimen30),
                 topRight: Radius.circular(Dimension.dimen30)),
-        color: Color(0xFFfff8ff)),
-
+            color: Color(0xFFfff8ff)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
               height: Dimension.dimen50,
-              padding: EdgeInsets.only(left: Dimension.dimen20,right: Dimension.dimen20),
+              padding: EdgeInsets.only(
+                  left: Dimension.dimen20, right: Dimension.dimen20),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(Dimension.dimen20),
                   color: Colors.white),
               child: Row(
-mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Icon(Icons.remove,size: Dimension.dimen20),
+                  Icon(Icons.remove, size: Dimension.dimen20),
                   SizedBox(width: Dimension.dimen10),
                   BigText(text: '0'),
                   SizedBox(width: Dimension.dimen10),
-                  Icon(Icons.add,size: Dimension.dimen20)
+                  Icon(Icons.add, size: Dimension.dimen20)
                 ],
               ),
             ),
             Container(
               height: Dimension.dimen50,
               alignment: Alignment.center,
-              padding: EdgeInsets.only(left: Dimension.dimen10,right: Dimension.dimen10),
+              padding: EdgeInsets.only(
+                  left: Dimension.dimen10, right: Dimension.dimen10),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(Dimension.dimen20),
+                  borderRadius: BorderRadius.circular(Dimension.dimen15),
                   color: AppColors.primaryColor),
-              child: BigText(text: ' \$0.5 | Add To Cart',color: Colors.white,size: Dimension.dimen16,),
+              child: BigText(
+                text: ' \$0.5 | Add To Cart',
+                color: Colors.white,
+                size: Dimension.dimen16,
+              ),
             )
           ],
         ),

@@ -1,9 +1,17 @@
+import 'package:floor/floor.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:movies/controller/popular_movie_controller.dart';
 import 'package:movies/pages/home/movies_home_page.dart';
 import 'package:movies/pages/movies/popular_movies_deail.dart';
+import 'package:movies/pages/movies/recommended_movies_detail.dart';
+import 'package:movies/utils/route_helper.dart';
+import 'helper/dependencies.dart' as dependency;
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dependency.init();
   runApp(const MyApp());
 }
 
@@ -13,22 +21,21 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    Get.find<PopularMovieController>().getPopularMovieList();
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Movies Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
+
         primarySwatch: Colors.blue,
       ),
-      home: const PopularMovieDetail(),
+      home: const MoviesHomePage(),
+      initialRoute: RouteHelper.initial,
+      getPages: RouteHelper.routes ,
+      /*routes: {
+        PopularMovieDetail.routeName:(context)=>const PopularMovieDetail(),
+        RecommendedMovieDetail.routeName:(context)=>const RecommendedMovieDetail(),
+      },*/
     );
   }
 }

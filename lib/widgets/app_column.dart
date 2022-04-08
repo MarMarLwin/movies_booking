@@ -8,20 +8,19 @@ import 'icon_and_text.dart';
 
 class AppColumn extends StatelessWidget {
   final String title;
-  final String rateText;
-  final String commentText;
-  final String status;
-  final String size;
-  final String duration;
-  const AppColumn({Key? key,required this.title,required this.rateText,required this.commentText,required this.status,required this.size,required this.duration}) : super(key: key);
+  final String voteAverage;
+  final String voteCount;
+  final String releaseDate;
+  final String language;
+  const AppColumn({Key? key,required this.title,required this.voteAverage,required this.voteCount,required this.releaseDate,required this.language}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(
-          top: Dimension.dimen10,
-          left: Dimension.dimen10,
-          right: Dimension.dimen10),
+          top: Dimension.dimen10/2,
+          left: Dimension.dimen10/2,
+          right: Dimension.dimen10/2),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -43,35 +42,33 @@ class AppColumn extends StatelessWidget {
               SizedBox(
                 width: Dimension.dimen10,
               ),
-              SmallText(text: rateText),
+              SmallText(text: voteAverage),
               SizedBox(
-                width: Dimension.dimen10,
+                width: Dimension.dimen30,
               ),
-              SmallText(text: commentText),
-              SizedBox(
-                width: Dimension.dimen10,
-              ),
-              SmallText(text: 'comments')
+
+              IconAndText(
+                  icon: Icons.supervisor_account,
+                  text: voteCount,
+                  iconColor: Colors.lightBlue),
             ],
           ),
           SizedBox(
-            height: Dimension.dimen20,
+            height: Dimension.dimen10,
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
             children:  [
               IconAndText(
-                  icon: Icons.circle_sharp,
-                  text: status,
+                  icon: Icons.date_range,
+                  text: releaseDate,
                   iconColor: Colors.orange),
+              SizedBox(width: Dimension.dimen30,),
               IconAndText(
-                  icon: Icons.data_usage,
-                  text: size,
+                  icon: Icons.language,
+                  text: language,
                   iconColor: Colors.lightBlue),
-              IconAndText(
-                  icon: Icons.timer,
-                  text: duration,
-                  iconColor: Colors.red),
+
             ],
           )
         ],

@@ -16,7 +16,7 @@ class _ExpandableTextState extends State<ExpandableText> {
   late String firstHalf;
   late String secondHalf;
   bool hiddenText = true;
-  double textHeight = Dimension.screenHeight / 5.63;
+  double textHeight = Dimension.dimen120;
 
   @override
   void initState() {
@@ -29,7 +29,6 @@ class _ExpandableTextState extends State<ExpandableText> {
       firstHalf = widget.text;
       secondHalf = '';
     }
-
   }
 
   @override
@@ -42,7 +41,7 @@ class _ExpandableTextState extends State<ExpandableText> {
                 SmallText(
                     text: hiddenText
                         ? firstHalf + '...'
-                        : firstHalf + secondHalf),
+                        : firstHalf + secondHalf,overflow: TextOverflow.visible,),
                 InkWell(
                     onTap: () {
                       setState(() {
